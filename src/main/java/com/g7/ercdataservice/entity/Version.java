@@ -7,6 +7,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -23,6 +24,7 @@ public class Version {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotNull
     private int number;
 
     @Enumerated(EnumType.STRING)
@@ -38,5 +40,10 @@ public class Version {
     @Fetch(FetchMode.JOIN)
     @JsonIgnore
     private Set<EvaluationForm> evaluationForms ;
+
+    @OneToMany(mappedBy = "version",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
+    @JsonIgnore
+    private Set<GeneralComment> generalComments;
 
 }
