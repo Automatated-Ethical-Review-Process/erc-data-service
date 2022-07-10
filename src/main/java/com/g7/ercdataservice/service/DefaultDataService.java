@@ -2,6 +2,7 @@ package com.g7.ercdataservice.service;
 
 import com.g7.ercdataservice.entity.EvaluationForm;
 import com.g7.ercdataservice.entity.Proposal;
+import com.g7.ercdataservice.entity.UserInfo;
 import com.g7.ercdataservice.entity.Version;
 import com.g7.ercdataservice.enums.DecisionType;
 import com.g7.ercdataservice.enums.ProposalStatus;
@@ -9,6 +10,7 @@ import com.g7.ercdataservice.enums.ProposalType;
 import com.g7.ercdataservice.enums.VersionStatus;
 import com.g7.ercdataservice.repository.EvaluationFormRepository;
 import com.g7.ercdataservice.repository.ProposalRepository;
+import com.g7.ercdataservice.repository.UserInfoRepository;
 import com.g7.ercdataservice.repository.VersionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +21,7 @@ import javax.annotation.PostConstruct;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class DefaultDataService {
@@ -33,8 +35,12 @@ public class DefaultDataService {
     @Autowired
     private EvaluationFormRepository formRepository;
 
+    @Autowired
+    private UserInfoRepository userInfoRepository;
+
     //@PostConstruct
     public ResponseEntity<?> test(){
+        UserInfo userInfo = userInfoRepository.findById("5f631b24-9f24-49b2-b71f-7327877826a3").get();
         Version version = Version.builder()
                 .number(1)
                 .status(VersionStatus.GRANTED)
@@ -46,11 +52,42 @@ public class DefaultDataService {
                 .status(ProposalStatus.ACTIVE)
                 .type(ProposalType.HUMAN_RESEARCH)
                 .versions(Set.of(version))
+                .user(userInfo)
                 .build();
 
         proposalRepository.save(proposal);
 
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    public void addUser() throws MalformedURLException {
+        List<String> qualification = new ArrayList<>();
+        qualification.add("qualification 01");
+        qualification.add("qualification 02");
+        qualification.add("qualification 03");
+        qualification.add("qualification 04");
+
+        UserInfo userInfo = UserInfo.builder()
+                .id(UUID.randomUUID().toString())
+                .email("abc@gmail.com")
+                .name("Sandaruwan Lakshitha")
+                .address("Brookside waththa, Mahagama")
+                .landNumber("0341234567")
+                .mobileNumber("0711234567")
+                .isUnderGraduate(true)
+                .nic("970273697V")
+                .passport("789456123pass")
+                .IdImg(new URL("https://www.google.com"))
+                .occupation("Lecturer")
+                .possition("Student")
+                .university("UOR")
+                .faculty("Science")
+                .year("2019")
+                .registrationNumber("SC/2018/10663")
+                .educationalQualifications(qualification)
+                .build();
+
+        userInfoRepository.save(userInfo);
     }
 
     //@PostConstruct

@@ -29,11 +29,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                //.addFilterAfter(new JWTAuthorizationFilter(authServiceURL), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new JWTAuthorizationFilter(authServiceURL), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests()
                 //.antMatchers("/api/data/test/message").permitAll()
                 //.antMatchers("/api/data/test/message/secure/method/**").authenticated()
                 //.antMatchers("/api/data/test/message/secure").hasAnyAuthority("ROLE_REVIEWER")
-                .anyRequest().permitAll();
+                .anyRequest().authenticated();
     }
 }
