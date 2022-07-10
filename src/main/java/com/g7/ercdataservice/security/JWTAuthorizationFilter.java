@@ -9,9 +9,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.WebUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -58,12 +60,15 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         }
     }
     private String parseJwt(HttpServletRequest request){
-        String authenticationHeader = request.getHeader(HEADER);
-
-        if(StringUtils.hasText(authenticationHeader) && authenticationHeader.startsWith(PREFIX)){
-            return authenticationHeader.substring(7);
-        }
-        return null;
+//        String authenticationHeader = request.getHeader(HEADER);
+//
+//        if(StringUtils.hasText(authenticationHeader) && authenticationHeader.startsWith(PREFIX)){
+//            return authenticationHeader.substring(7);
+//        }
+//        return null;
+        Cookie name = WebUtils.getCookie(request, "access");
+        //System.out.println(name.getValue());
+        return name.getValue();
     }
 
     private JSONObject callValidateAuthAPI(HttpServletRequest request) throws URISyntaxException {
