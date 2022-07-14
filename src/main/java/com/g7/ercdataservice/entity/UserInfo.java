@@ -78,7 +78,7 @@ public class UserInfo {
 
     private String year;
 
-    @Column(name = "reg_num")
+    @Column(name = "reg_num",updatable = false)
     private String registrationNumber;
 
     @Column(columnDefinition = "TEXT")

@@ -2,6 +2,7 @@ package com.g7.ercdataservice.service.impl;
 
 import com.g7.ercdataservice.entity.UserInfo;
 import com.g7.ercdataservice.exception.UserAlreadyExistException;
+import com.g7.ercdataservice.model.UserInfoUpdateRequest;
 import com.g7.ercdataservice.repository.UserInfoRepository;
 import com.g7.ercdataservice.service.UserInfoService;
 import org.springframework.beans.BeanUtils;
@@ -50,14 +51,14 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public void updateUserInfo(String id, UserInfo userInfo) {
+    public void updateUserInfo(String id, UserInfoUpdateRequest request) {
         if(!userInfoRepository.existsById(id)){
             throw new EntityNotFoundException("User not found");
         }
-        UserInfo userInfo1 = userInfoRepository.findById(id).get();
-        BeanUtils.copyProperties(userInfo,userInfo);
-        userInfo1.setId(id);
-        userInfoRepository.save(userInfo1);
+        UserInfo userInfo = userInfoRepository.findById(id).get();
+        BeanUtils.copyProperties(request,userInfo);
+        userInfo.setId(id);
+        userInfoRepository.save(userInfo);
     }
 
     @Override
