@@ -60,15 +60,15 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         }
     }
     private String parseJwt(HttpServletRequest request){
-//        String authenticationHeader = request.getHeader(HEADER);
-//
-//        if(StringUtils.hasText(authenticationHeader) && authenticationHeader.startsWith(PREFIX)){
-//            return authenticationHeader.substring(7);
-//        }
-//        return null;
-        Cookie name = WebUtils.getCookie(request, "access");
+        String authenticationHeader = request.getHeader(HEADER);
+
+        if(StringUtils.hasText(authenticationHeader) && authenticationHeader.startsWith(PREFIX)){
+            return authenticationHeader.substring(7);
+        }
+        return null;
+        //Cookie name = WebUtils.getCookie(request, "access");
         //System.out.println(name.getValue());
-        return name.getValue();
+        //return name.getValue();
     }
 
     private JSONObject callValidateAuthAPI(HttpServletRequest request) throws URISyntaxException {

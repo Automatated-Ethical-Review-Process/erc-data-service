@@ -53,9 +53,4 @@ public class Proposal {
     )
     private Set<Version> versions ;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
-    private UserInfo user;
-
 }

@@ -46,7 +46,7 @@ public class UserInfo {
     @NotNull
     private String address;
 
-    @Pattern(regexp = "(^[0-9]{10}$)",message = "Invalid land number")
+    //@Pattern(regexp = "(^[0-9]{10}$)",message = "Invalid land number")
     @Size(max = 10)
     @Column(name = "land")
     private String landNumber;
@@ -94,5 +94,9 @@ public class UserInfo {
     @Fetch(FetchMode.JOIN)
     @JsonIgnore
     private Set<Proposal> proposals;
+
+    @ManyToMany(mappedBy = "reviewers")
+    @JsonIgnore
+    private Set<Version> versions;
 
 }
