@@ -1,6 +1,5 @@
 package com.g7.ercdataservice.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.g7.ercdataservice.enums.ProposalStatus;
 import com.g7.ercdataservice.enums.ProposalType;
 import lombok.AllArgsConstructor;
@@ -52,5 +51,8 @@ public class Proposal {
             updatable = false
     )
     private Set<Version> versions ;
+
+    @ManyToOne
+    private User user;
 
 }

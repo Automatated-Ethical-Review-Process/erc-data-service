@@ -1,6 +1,6 @@
 package com.g7.ercdataservice.service.impl;
 
-import com.g7.ercdataservice.entity.UserInfo;
+import com.g7.ercdataservice.entity.User;
 import com.g7.ercdataservice.exception.UserAlreadyExistException;
 import com.g7.ercdataservice.model.UserInfoUpdateRequest;
 import com.g7.ercdataservice.repository.UserInfoRepository;
@@ -19,7 +19,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     private UserInfoRepository userInfoRepository;
 
     @Override
-    public UserInfo save(UserInfo userInfo) {
+    public User save(User userInfo) {
         if(userInfoRepository.existsUserInfoByIdOrEmail(userInfo.getId(), userInfo.getEmail())){
             throw new UserAlreadyExistException("User already exists");
         }
@@ -27,7 +27,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public UserInfo getById(String id) {
+    public User getById(String id) {
         if(!userInfoRepository.existsById(id)){
             throw new EntityNotFoundException("User not found");
         }
@@ -35,7 +35,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public List<UserInfo> getAllUserInfo() {
+    public List<User> getAllUserInfo() {
         if(userInfoRepository.count() == 0){
             throw new EntityNotFoundException("User list not found");
         }
@@ -55,7 +55,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         if(!userInfoRepository.existsById(id)){
             throw new EntityNotFoundException("User not found");
         }
-        UserInfo userInfo = userInfoRepository.findById(id).get();
+        User userInfo = userInfoRepository.findById(id).get();
         BeanUtils.copyProperties(request,userInfo);
         userInfo.setId(id);
         userInfoRepository.save(userInfo);
@@ -66,7 +66,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         if(!userInfoRepository.existsById(id)){
             throw new EntityNotFoundException("User not found");
         }
-        UserInfo userInfo = userInfoRepository.findById(id).get();
+        User userInfo = userInfoRepository.findById(id).get();
         userInfo.setEmail(email);
         userInfoRepository.save(userInfo);
     }

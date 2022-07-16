@@ -1,6 +1,6 @@
 package com.g7.ercdataservice.controller;
 
-import com.g7.ercdataservice.entity.UserInfo;
+import com.g7.ercdataservice.entity.User;
 import com.g7.ercdataservice.model.UserInfoUpdateRequest;
 import com.g7.ercdataservice.service.impl.UserInfoServiceImpl;
 import net.minidev.json.JSONObject;
@@ -53,7 +53,7 @@ public class UserInfoController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> createUserInfo(@RequestBody @Valid  UserInfo userInfo){
+    public ResponseEntity<?> createUserInfo(@RequestBody @Valid User userInfo){
         try {
             userInfoService.save(userInfo);
             return new ResponseEntity<>(HttpStatus.CREATED);

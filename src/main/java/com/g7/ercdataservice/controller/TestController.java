@@ -1,6 +1,5 @@
 package com.g7.ercdataservice.controller;
 
-import com.g7.ercdataservice.entity.UserInfo;
 import com.g7.ercdataservice.repository.ProposalRepository;
 import com.g7.ercdataservice.repository.UserInfoRepository;
 import com.g7.ercdataservice.repository.VersionRepository;
@@ -11,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.PostConstruct;
 
 @RestController
 @RequestMapping("/api/data/test")

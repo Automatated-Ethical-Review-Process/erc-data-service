@@ -24,7 +24,7 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = {"email","mobile"})
         }
 )
-public class UserInfo {
+public class User {
 
     @Id
     @Column(name = "id",updatable = false,nullable = false)
@@ -95,8 +95,8 @@ public class UserInfo {
     @JsonIgnore
     private Set<Proposal> proposals;
 
-    @ManyToMany(mappedBy = "reviewers")
-    @JsonIgnore
-    private Set<Version> versions;
+//    @ManyToMany(mappedBy = "reviewers")
+//    @JsonIgnore
+//    private Set<Version> versions;
 
 }

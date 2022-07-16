@@ -2,7 +2,7 @@ package com.g7.ercdataservice.service;
 
 import com.g7.ercdataservice.entity.EvaluationForm;
 import com.g7.ercdataservice.entity.Proposal;
-import com.g7.ercdataservice.entity.UserInfo;
+import com.g7.ercdataservice.entity.User;
 import com.g7.ercdataservice.entity.Version;
 import com.g7.ercdataservice.enums.DecisionType;
 import com.g7.ercdataservice.enums.ProposalStatus;
@@ -17,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
@@ -40,7 +39,7 @@ public class DefaultDataService {
 
     //@PostConstruct
     public ResponseEntity<?> test(){
-        UserInfo userInfo = userInfoRepository.findById("5f631b24-9f24-49b2-b71f-7327877826a3").get();
+        User userInfo = userInfoRepository.findById("5f631b24-9f24-49b2-b71f-7327877826a3").get();
         Version version = Version.builder()
                 .number(1)
                 .status(VersionStatus.GRANTED)
@@ -67,7 +66,7 @@ public class DefaultDataService {
         qualification.add("qualification 03");
         qualification.add("qualification 04");
 
-        UserInfo userInfo = UserInfo.builder()
+        User userInfo = User.builder()
                 .id(UUID.randomUUID().toString())
                 .email("abc@gmail.com")
                 .name("Sandaruwan Lakshitha")
@@ -79,7 +78,7 @@ public class DefaultDataService {
                 .passport("789456123pass")
                 .IdImg(new URL("https://www.google.com"))
                 .occupation("Lecturer")
-                .possition("Student")
+                .position("Student")
                 .university("UOR")
                 .faculty("Science")
                 .year("2019")
