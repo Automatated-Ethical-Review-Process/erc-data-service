@@ -1,4 +1,4 @@
-package com.g7.ercdataservice.service.impl;
+package com.g7.ercdataservice.service;
 
 import com.g7.ercdataservice.entity.Proposal;
 import com.g7.ercdataservice.entity.User;
