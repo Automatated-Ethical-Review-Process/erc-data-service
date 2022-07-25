@@ -1,11 +1,9 @@
 package com.g7.ercdataservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.g7.ercdataservice.enums.ProposalStatus;
 import com.g7.ercdataservice.enums.ProposalType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -16,7 +14,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "proposal")
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @Builder
 public class Proposal {
@@ -42,17 +41,13 @@ public class Proposal {
 
     @OneToMany(
             cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
-    )
-    @JoinColumn(
-            name = "proposal_id",
-            referencedColumnName = "id",
-            nullable = false,
-            updatable = false
+            fetch = FetchType.EAGER,
+            orphanRemoval = true
     )
     private Set<Version> versions ;
 
     @ManyToOne
+    @JsonIgnore
     private User user;
 
 }

@@ -33,15 +33,37 @@ public class Version {
     @Column(columnDefinition="TEXT")
     private String comment;
 
-    @OneToMany(mappedBy = "version",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(
+            name = "proposal_id",
+            referencedColumnName = "id"
+    )
+    @JsonIgnore
+    private Proposal proposal;
+
+    @OneToMany(
+            mappedBy = "version",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
     private Set<Documents> documents;
 
-    @OneToMany(mappedBy = "version",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(
+            mappedBy = "version",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
     @JsonIgnore
     private Set<EvaluationForm> evaluationForms ;
 
-    @OneToMany(mappedBy = "version",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(
+            mappedBy = "version",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
     @JsonIgnore
     private Set<GeneralComment> generalComments;

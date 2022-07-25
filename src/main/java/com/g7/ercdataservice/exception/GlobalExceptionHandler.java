@@ -66,13 +66,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
         return apiError;
     }
 
+    @ExceptionHandler(ProposalOngoingException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError AllExceptionHandler(){
+        ApiError apiError = new ApiError();
+        apiError.setFields(null);
+        apiError.setMessage("You have active proposal in system");
+        return apiError;
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError AllExceptionHandler(Exception ex){
         ApiError apiError = new ApiError();
         apiError.setFields(null);
-        System.out.println("hello");
         apiError.setMessage(ex.getMessage());
         return apiError;
     }
