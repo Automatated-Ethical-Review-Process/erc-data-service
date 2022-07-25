@@ -42,8 +42,8 @@ public class UserInfoController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> createUserInfo(@RequestBody @Valid User userInfo){
-        userInfoService.save(userInfo);
+    public ResponseEntity<?> createUserInfo(@RequestBody @Valid User user){
+        userInfoService.save(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UserInfoService {
 
-    User save(User userInfo);
+    User save(User user);
     User getById(String id);
     List<User> getAllUserInfo();
     void deleteUserInfo(String id);

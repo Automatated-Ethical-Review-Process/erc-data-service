@@ -19,11 +19,11 @@ public class UserInfoServiceImpl implements UserInfoService {
     private UserInfoRepository userInfoRepository;
 
     @Override
-    public User save(User userInfo) {
-        if(userInfoRepository.existsUserInfoByIdOrEmail(userInfo.getId(), userInfo.getEmail())){
+    public User save(User user) {
+        if(userInfoRepository.existsUserInfoByIdOrEmail(user.getId(), user.getEmail())){
             throw new UserAlreadyExistException("User already exists");
         }
-        return userInfoRepository.save(userInfo);
+        return userInfoRepository.save(user);
     }
 
     @Override

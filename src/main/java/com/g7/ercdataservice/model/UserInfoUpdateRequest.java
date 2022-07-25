@@ -1,5 +1,6 @@
 package com.g7.ercdataservice.model;
 
+import com.g7.ercdataservice.entity.Role;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -7,6 +8,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.net.URL;
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,4 +40,5 @@ public class UserInfoUpdateRequest {
     private String faculty;
     private String year;
     private List<String> educationalQualifications;
+    private Set<Role> roleSet;
 }
