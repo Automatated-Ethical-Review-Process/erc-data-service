@@ -2,17 +2,14 @@ package com.g7.ercdataservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.g7.ercdataservice.enums.DocumentType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import java.net.URL;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 @Entity
 @Table(name = "documents")
@@ -21,16 +18,17 @@ public class Documents {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     @Enumerated(EnumType.STRING)
     private DocumentType type;
-
-    @Column(name = "file_url")
-    private URL url;
-
+    @Column(name = "file_name")
+    private String file;
     @ManyToOne
     @JoinColumn(name = "version_id")
     @JsonIgnore
     private Version version;
-
+    public Documents(DocumentType type, String file, Version version) {
+        this.type = type;
+        this.file = file;
+        this.version = version;
+    }
 }
