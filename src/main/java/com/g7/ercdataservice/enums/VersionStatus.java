@@ -1,11 +1,14 @@
 package com.g7.ercdataservice.enums;
 
 public enum VersionStatus {
-    REJECTED,
-    AWAITING_REVISIONS,
-    UNDER_REVIEWER,
+
+    PENDING,
+    SUBMITTED,
+    UNDER_REVIEW,
     MAJOR,
     MINOR,
+    AWAITING_REVISIONS,
     GRANTED,
+    REJECTED,
 
 }

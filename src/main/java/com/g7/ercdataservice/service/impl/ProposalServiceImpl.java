@@ -38,7 +38,7 @@ public class ProposalServiceImpl implements ProposalService {
         versionSet.add(version);
         proposal.setVersions(versionSet);
         proposal.setUser(user);
-        proposal.setStatus(ProposalStatus.SUBMITTED);
+        proposal.setStatus(ProposalStatus.PENDING);
         proposal.setDate(Instant.now());
         version.setProposal(proposal);
         versionSet.add(version);

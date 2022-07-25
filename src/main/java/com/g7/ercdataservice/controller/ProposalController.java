@@ -55,6 +55,11 @@ public class ProposalController {
         return new ResponseEntity<>(proposalService.getById(id),HttpStatus.OK);
     }
 
+    @GetMapping("/{id}/versions")
+    public ResponseEntity<?> getByIdAllVersions(@PathVariable UUID id){
+        return new ResponseEntity<>(proposalService.getById(id).getVersions(),HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable UUID id){
         proposalService.deleteById(id);

@@ -1,7 +1,8 @@
 package com.g7.ercdataservice.enums;
 
 public enum ProposalStatus {
-    SUBMITTED,
+    PENDING,
+    //SUBMITTED,
     ACTIVE,
     REJECTED,
     GRANTED
