@@ -46,6 +46,10 @@ public class ProposalServiceImpl implements ProposalService {
         return proposalRepository.save(proposal);
     }
 
+    public void updateProposal(Proposal proposal){
+        proposalRepository.save(proposal);
+    }
+
     @Override
     public Proposal getById(UUID id) {
         return proposalRepository.findById(id).orElseThrow(
@@ -72,6 +76,11 @@ public class ProposalServiceImpl implements ProposalService {
     @Override
     public List<Proposal> getAllProposals() {
         return proposalRepository.findAll();
+    }
+
+    @Override
+    public void updateProposalState(UUID id, ProposalStatus status) {
+
     }
 
     @Override
