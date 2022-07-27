@@ -2,6 +2,7 @@ package com.g7.ercdataservice.controller;
 
 import com.g7.ercdataservice.entity.User;
 import com.g7.ercdataservice.model.UserInfoUpdateRequest;
+import com.g7.ercdataservice.model.UserRoleUpdateRequest;
 import com.g7.ercdataservice.service.UserInfoService;
 import com.g7.ercdataservice.service.impl.UserInfoServiceImpl;
 import net.minidev.json.JSONObject;
@@ -61,6 +62,17 @@ public class UserInfoController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String id = authentication.getPrincipal().toString();
         userInfoService.updateEmail(id,email);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/role")
+    public ResponseEntity<?> updateRole(@RequestBody UserRoleUpdateRequest request){
+       try {
+           System.out.println(request);
+           userInfoService.updateUserRoles(request.getId(), request.getRoles());
+       }catch (Exception e){
+           e.printStackTrace();
+       }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

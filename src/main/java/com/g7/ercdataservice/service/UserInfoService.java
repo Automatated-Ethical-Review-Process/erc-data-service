@@ -1,9 +1,11 @@
 package com.g7.ercdataservice.service;
 
+import com.g7.ercdataservice.entity.Role;
 import com.g7.ercdataservice.entity.User;
 import com.g7.ercdataservice.model.UserInfoUpdateRequest;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserInfoService {
 
@@ -13,4 +15,5 @@ public interface UserInfoService {
     void deleteUserInfo(String id);
     void updateUserInfo(String id, UserInfoUpdateRequest request);
     void updateEmail(String id,String email);
+    void updateUserRoles(String id, Set<Role> roles);
 }

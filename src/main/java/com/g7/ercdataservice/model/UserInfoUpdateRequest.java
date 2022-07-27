@@ -39,6 +39,6 @@ public class UserInfoUpdateRequest {
     private String university;
     private String faculty;
     private String year;
-    private List<String> educationalQualifications;
+    private Set<String> educationalQualifications;
     private Set<Role> roleSet;
 }

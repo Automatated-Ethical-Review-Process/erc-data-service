@@ -84,7 +84,8 @@ public class User {
 
     @Column(columnDefinition = "TEXT")
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> educationalQualifications;
+    @Fetch(value = FetchMode.JOIN)
+    private Set<String> educationalQualifications;
 
     @ManyToMany(fetch = FetchType.EAGER )
     @JoinTable(name = "user_roles",joinColumns = @JoinColumn(name ="user_id"),

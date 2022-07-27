@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserInfoServiceImpl implements UserInfoService {
@@ -50,12 +51,6 @@ public class UserInfoServiceImpl implements UserInfoService {
             throw new EntityNotFoundException("User not found");
         }
         User user =userInfoRepository.findById(id).get();
-        Role admin = roleRepository.findRoleByName(ERole.ROLE_ADMIN);
-        Role applicant = roleRepository.findRoleByName(ERole.ROLE_APPLICANT);
-        Role reviewer = roleRepository.findRoleByName(ERole.ROLE_EXTERNAL_REVIEWER);
-        System.out.println(user.getRoles().contains(admin));
-        System.out.println(user.getRoles().contains(applicant));
-        System.out.println(user.getRoles().contains(reviewer));
         return user;
     }
 
@@ -83,6 +78,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         User userInfo = userInfoRepository.findById(id).get();
         BeanUtils.copyProperties(request,userInfo);
         userInfo.setId(id);
+        userInfo.setEducationalQualifications(request.getEducationalQualifications());
         userInfoRepository.save(userInfo);
     }
 
@@ -94,5 +90,16 @@ public class UserInfoServiceImpl implements UserInfoService {
         User userInfo = userInfoRepository.findById(id).get();
         userInfo.setEmail(email);
         userInfoRepository.save(userInfo);
+    }
+
+    @Override
+    public void updateUserRoles(String id, Set<Role> roles) {
+        try {
+            User user = getById(id);
+            user.setRoles(roles);
+            userInfoRepository.save(user);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
