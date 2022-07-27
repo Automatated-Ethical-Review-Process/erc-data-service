@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.g7.ercdataservice.entity.Proposal;
 import com.g7.ercdataservice.entity.Version;
+import com.g7.ercdataservice.enums.EReviewType;
 import com.g7.ercdataservice.enums.ReviewerStatus;
 import com.g7.ercdataservice.model.ProposalRequest;
 import com.g7.ercdataservice.service.ProposalService;
@@ -49,6 +50,12 @@ public class ProposalController {
     @GetMapping("/all")
     public ResponseEntity<?> getAll(){
         return new ResponseEntity<>(proposalService.getAllProposals(),HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/review-type/{type}")
+    public ResponseEntity<?> updateProposalReviewTypeById(@PathVariable UUID id, @PathVariable EReviewType type){
+        proposalService.updateProposalReviewType(id,type);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

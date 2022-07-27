@@ -1,6 +1,7 @@
 package com.g7.ercdataservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.g7.ercdataservice.enums.EReviewType;
 import com.g7.ercdataservice.enums.ProposalStatus;
 import com.g7.ercdataservice.enums.ProposalType;
 import lombok.*;
@@ -35,6 +36,9 @@ public class Proposal {
 
     @Enumerated(EnumType.STRING)
     private ProposalType type;
+
+    @Enumerated(EnumType.STRING)
+    private EReviewType reviewType;
 
     private Instant date = Instant.now();
 

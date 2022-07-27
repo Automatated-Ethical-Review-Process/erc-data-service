@@ -3,6 +3,7 @@ package com.g7.ercdataservice.service.impl;
 import com.g7.ercdataservice.entity.Proposal;
 import com.g7.ercdataservice.entity.User;
 import com.g7.ercdataservice.entity.Version;
+import com.g7.ercdataservice.enums.EReviewType;
 import com.g7.ercdataservice.enums.ProposalStatus;
 import com.g7.ercdataservice.enums.ReviewerStatus;
 import com.g7.ercdataservice.exception.ProposalOngoingException;
@@ -84,11 +85,6 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     @Override
-    public void updateProposalState(UUID id, ProposalStatus status) {
-
-    }
-
-    @Override
     public void deleteById(UUID id){
         Proposal proposal =proposalRepository.findById(id).orElseThrow(
                 ()-> new EntityNotFoundException("Proposal not exists"));
@@ -112,5 +108,12 @@ public class ProposalServiceImpl implements ProposalService {
                         }
                 );
         return proposalList;
+    }
+
+    @Override
+    public void updateProposalReviewType(UUID pid, EReviewType reviewType) {
+        Proposal proposal = getById(pid);
+        proposal.setReviewType(reviewType);
+        proposalRepository.save(proposal);
     }
 }

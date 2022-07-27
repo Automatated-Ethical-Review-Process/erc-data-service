@@ -3,7 +3,7 @@ package com.g7.ercdataservice.service;
 import com.g7.ercdataservice.entity.Proposal;
 import com.g7.ercdataservice.entity.User;
 import com.g7.ercdataservice.entity.Version;
-import com.g7.ercdataservice.enums.ProposalStatus;
+import com.g7.ercdataservice.enums.EReviewType;
 import com.g7.ercdataservice.enums.ReviewerStatus;
 
 import java.util.List;
@@ -18,6 +18,6 @@ public interface ProposalService {
     void deleteById(UUID id);
     void updateProposal(Proposal proposal);
     List<Proposal> getAllProposals();
-    void updateProposalState(UUID id, ProposalStatus status);
     List<Proposal> getAllProposalReviewerAndReviewStatus(String reviewerId, ReviewerStatus status);
+    void updateProposalReviewType(UUID pid, EReviewType reviewType);
 }
