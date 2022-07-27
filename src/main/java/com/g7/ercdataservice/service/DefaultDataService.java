@@ -40,7 +40,7 @@ public class DefaultDataService {
         }
     }
 
-    @PostConstruct
+   // @PostConstruct
     public void runq(){
         System.out.println(roleRepository.findRoleByName(ERole.ROLE_APPLICANT));
         System.out.println(userInfoRepository.getAlla(1));

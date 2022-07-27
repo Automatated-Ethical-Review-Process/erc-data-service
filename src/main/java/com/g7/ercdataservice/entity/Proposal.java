@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.g7.ercdataservice.enums.ProposalStatus;
 import com.g7.ercdataservice.enums.ProposalType;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -51,4 +53,13 @@ public class Proposal {
     @JsonIgnore
     private User user;
 
+    @OneToMany(
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.EAGER,
+            orphanRemoval = true,
+            mappedBy = "proposal"
+    )
+    @Fetch(FetchMode.JOIN)
+    @JsonIgnore
+    private Set<ReviewAssign> reviewAssigns ;
 }

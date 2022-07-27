@@ -30,13 +30,13 @@ public class UserInfoController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SECRETARY')")
+    //@PreAuthorize("hasRole('ADMIN') or hasRole('SECRETARY')")
     public ResponseEntity<?> getUserInfoById(@PathVariable String id){
         return new ResponseEntity<>(userInfoService.getById(id),HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SECRETARY')")
+   // @PreAuthorize("hasRole('ADMIN') or hasRole('SECRETARY')")
     public ResponseEntity<?> getAllUserInfo(){
         return new ResponseEntity<>(userInfoService.getAllUserInfo(),HttpStatus.OK);
     }

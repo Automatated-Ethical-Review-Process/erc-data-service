@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.g7.ercdataservice.entity.Proposal;
 import com.g7.ercdataservice.entity.Version;
+import com.g7.ercdataservice.enums.ReviewerStatus;
 import com.g7.ercdataservice.model.ProposalRequest;
 import com.g7.ercdataservice.service.ProposalService;
 import com.g7.ercdataservice.service.VersionService;
@@ -64,5 +65,20 @@ public class ProposalController {
     public ResponseEntity<?> deleteById(@PathVariable UUID id){
         proposalService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/all/reviewer/{rid}/pending")
+    public ResponseEntity<?> getAllProposalReviewerAndReviewStatusPending(@PathVariable String rid){
+        return new ResponseEntity<>(proposalService.getAllProposalReviewerAndReviewStatus(rid, ReviewerStatus.PENDING),HttpStatus.OK);
+    }
+
+    @GetMapping("/all/reviewer/{rid}/reject")
+    public ResponseEntity<?> getAllProposalReviewerAndReviewStatusReject(@PathVariable String rid){
+        return new ResponseEntity<>(proposalService.getAllProposalReviewerAndReviewStatus(rid, ReviewerStatus.REJECT),HttpStatus.OK);
+    }
+
+    @GetMapping("/all/reviewer/{rid}/confirm")
+    public ResponseEntity<?> getAllProposalReviewerAndReviewStatusConfirm(@PathVariable String rid){
+        return new ResponseEntity<>(proposalService.getAllProposalReviewerAndReviewStatus(rid, ReviewerStatus.CONFIRM),HttpStatus.OK);
     }
 }

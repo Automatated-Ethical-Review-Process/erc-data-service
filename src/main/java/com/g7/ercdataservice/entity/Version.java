@@ -68,4 +68,14 @@ public class Version {
     @JsonIgnore
     private Set<GeneralComment> generalComments;
 
+    @OneToMany(
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.EAGER,
+            orphanRemoval = true,
+            mappedBy = "version"
+    )
+    @Fetch(FetchMode.JOIN)
+    //@JsonIgnore
+    private Set<ReviewAssign> reviewAssigns ;
+
 }

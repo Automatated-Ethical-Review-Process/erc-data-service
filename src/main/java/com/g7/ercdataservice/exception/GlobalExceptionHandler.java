@@ -46,6 +46,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
         return apiError;
     }
 
+    @ExceptionHandler(ReviewerAlreadyAssignedException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError ReviewerAlreadyAssignedExceptionHandler(ReviewerAlreadyAssignedException ex){
+        ApiError apiError = new ApiError();
+        apiError.setFields(null);
+        apiError.setMessage(ex.getMessage());
+        return apiError;
+    }
+
     @ExceptionHandler(AuthenticationException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)

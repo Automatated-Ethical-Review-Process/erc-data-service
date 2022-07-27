@@ -86,6 +86,11 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Override
+    public void updateByVersion(Version version) {
+        versionRepository.save(version);
+    }
+
+    @Override
     public void updateVersionState(UUID pid, long vid, VersionStatus status) {
         Proposal proposal = proposalService.getById(pid);
         proposal.getVersions().stream().forEach(
@@ -100,6 +105,19 @@ public class VersionServiceImpl implements VersionService {
                         } else if (VersionStatus.GRANTED == status) {
                             proposal.setStatus(ProposalStatus.GRANTED);
                         }
+                    }
+                }
+        );
+        proposalService.updateProposal(proposal);
+    }
+
+    @Override
+    public void addCommentToVersion(UUID pid, long vid, String comment) {
+        Proposal proposal = proposalService.getById(pid);
+        proposal.getVersions().stream().forEach(
+                (x)->{
+                    if(x.getId() == vid){
+                        x.setComment(comment);
                     }
                 }
         );

@@ -4,6 +4,7 @@ import com.g7.ercdataservice.entity.Proposal;
 import com.g7.ercdataservice.entity.User;
 import com.g7.ercdataservice.entity.Version;
 import com.g7.ercdataservice.enums.ProposalStatus;
+import com.g7.ercdataservice.enums.ReviewerStatus;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,6 +18,6 @@ public interface ProposalService {
     void deleteById(UUID id);
     void updateProposal(Proposal proposal);
     List<Proposal> getAllProposals();
-
     void updateProposalState(UUID id, ProposalStatus status);
+    List<Proposal> getAllProposalReviewerAndReviewStatus(String reviewerId, ReviewerStatus status);
 }

@@ -4,9 +4,13 @@ import com.g7.ercdataservice.entity.Proposal;
 import com.g7.ercdataservice.entity.User;
 import com.g7.ercdataservice.entity.Version;
 import com.g7.ercdataservice.enums.ProposalStatus;
+import com.g7.ercdataservice.enums.ReviewerStatus;
 import com.g7.ercdataservice.exception.ProposalOngoingException;
 import com.g7.ercdataservice.repository.ProposalRepository;
+import com.g7.ercdataservice.repository.ReviewerAssignRepository;
 import com.g7.ercdataservice.service.ProposalService;
+import com.g7.ercdataservice.service.ReviewAssignService;
+import com.g7.ercdataservice.service.ReviewerService;
 import com.g7.ercdataservice.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -16,10 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ProposalServiceImpl implements ProposalService {
@@ -27,6 +28,10 @@ public class ProposalServiceImpl implements ProposalService {
     private UserInfoService userInfoService;
     @Autowired
     private ProposalRepository proposalRepository;
+    @Autowired
+    private ReviewerAssignRepository assignRepository;
+    @Autowired
+    private ReviewerService reviewerService;
     @Override
     public Proposal save(Proposal proposal, Version version) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -35,11 +40,11 @@ public class ProposalServiceImpl implements ProposalService {
             throw new ProposalOngoingException();
         }
         Set<Version> versionSet = new HashSet<>();
-        versionSet.add(version);
-        proposal.setVersions(versionSet);
+
         proposal.setUser(user);
         proposal.setStatus(ProposalStatus.PENDING);
         proposal.setDate(Instant.now());
+
         version.setProposal(proposal);
         versionSet.add(version);
         proposal.setVersions(versionSet);
@@ -91,5 +96,21 @@ public class ProposalServiceImpl implements ProposalService {
         proposal.getVersions().clear();
         proposal.setUser(null);
         proposalRepository.deleteById(proposalRepository.save(proposal).getId());
+    }
+
+    public List<Proposal> getAllProposalReviewerAndReviewStatus(String reviewerId, ReviewerStatus status) {
+        List<Proposal> proposalList = new ArrayList<>();
+        assignRepository.findReviewAssignsByReviewerAndStatus(reviewerService.getById(reviewerId),status)
+                .orElseThrow(
+                        ()-> new EntityNotFoundException("ReviewAssign object not found")
+                ).stream().forEach(
+                        (x)->{
+                            if(!proposalList.contains(x.getProposal())){
+                                proposalList.add(x.getProposal());
+                            }
+
+                        }
+                );
+        return proposalList;
     }
 }

@@ -14,6 +14,7 @@ public interface VersionService {
     Version getById(UUID pid,long vid);
     void deleteById(Proposal proposal,String id);
     void update (Version version,String id);
-
+    void updateByVersion(Version version);
     void updateVersionState(UUID pId,long vId, VersionStatus status);
+    void addCommentToVersion(UUID pId,long vId,String comment);
 }

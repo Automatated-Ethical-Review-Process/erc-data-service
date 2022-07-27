@@ -2,6 +2,7 @@ package com.g7.ercdataservice.controller;
 
 import com.g7.ercdataservice.enums.VersionStatus;
 import com.g7.ercdataservice.service.VersionService;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,22 @@ public class VersionController {
             throw e;
         }
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/{vid}/secretary")
+    public ResponseEntity<?> addSecretaryComment(
+            @PathVariable UUID pid,
+            @PathVariable long vid,
+            @RequestBody JSONObject jsonObject
+    )
+    {
+     try {
+         versionService.addCommentToVersion(pid,vid, jsonObject.getAsString("comment"));
+         return new ResponseEntity<>(HttpStatus.OK);
+     }catch (Exception e){
+         e.printStackTrace();
+         throw e;
+     }
     }
 
     @GetMapping("/{vid}")
