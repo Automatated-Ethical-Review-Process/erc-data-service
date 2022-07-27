@@ -77,7 +77,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         json.put("token", parseJwt(request));
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<JSONObject> result = restTemplate.postForEntity(uri, json, JSONObject.class);
-        System.out.println(result.getStatusCode().value());
+        //System.out.println(result.getStatusCode().value());
         return result.getBody();
     }
 
