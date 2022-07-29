@@ -23,4 +23,5 @@ public interface ReviewerAssignRepository extends JpaRepository<ReviewAssign,Lon
 
     int countReviewAssignsByReviewerAndStatusNot(Reviewer reviewer, ReviewerStatus status);
     int countReviewAssignsByReviewer(Reviewer reviewer);
+    Optional<List<ReviewAssign>> findReviewAssignsByStatusNot(ReviewerStatus status);
 }

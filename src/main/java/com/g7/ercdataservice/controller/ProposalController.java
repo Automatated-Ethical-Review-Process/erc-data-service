@@ -68,6 +68,12 @@ public class ProposalController {
         return new ResponseEntity<>(proposalService.previousAssignedReviewerListOfProposal(id),HttpStatus.OK);
     }
 
+    //getProposalByReviewerPendingOrRejectState
+    @GetMapping("/review-state")
+    public ResponseEntity<?> getProposalByReviewerPendingOrRejectState(){
+        return new ResponseEntity<>(proposalService.getProposalByReviewerPendingOrRejectState(),HttpStatus.OK);
+    }
+
     @GetMapping("/{id}/versions")
     public ResponseEntity<?> getByIdAllVersions(@PathVariable UUID id){
         return new ResponseEntity<>(proposalService.getById(id).getVersions(),HttpStatus.OK);

@@ -50,7 +50,7 @@ public class Proposal {
             fetch = FetchType.EAGER,
             orphanRemoval = true
     )
-    //@JsonIgnore
+    @JsonIgnore
     private Set<Version> versions ;
 
     @ManyToOne

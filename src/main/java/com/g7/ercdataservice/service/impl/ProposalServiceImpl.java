@@ -142,4 +142,17 @@ public class ProposalServiceImpl implements ProposalService {
         );
         return jsonObjects;
     }
+
+    @Override
+    public List<Proposal> getProposalByReviewerPendingOrRejectState() {
+        List<ReviewAssign> reviewAssignList = assignRepository.findReviewAssignsByStatusNot(ReviewerStatus.CONFIRM)
+                .orElseThrow(()-> new EntityNotFoundException("ReviewAssigns are not found"));
+        List<UUID> uuids = new ArrayList<>();
+        reviewAssignList.stream().forEach(
+                (x)->{
+                    uuids.add(x.getProposal().getId());
+                }
+        );
+        return proposalRepository.findAllById(uuids);
+    }
 }

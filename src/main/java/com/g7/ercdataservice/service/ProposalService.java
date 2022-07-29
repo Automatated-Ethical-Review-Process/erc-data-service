@@ -23,4 +23,5 @@ public interface ProposalService {
     void updateProposalReviewType(UUID pid, EReviewType reviewType);
 
     List<JSONObject> previousAssignedReviewerListOfProposal(UUID pid);
+    List<Proposal> getProposalByReviewerPendingOrRejectState();
 }
