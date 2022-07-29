@@ -1,8 +1,11 @@
 package com.g7.ercdataservice.controller;
 
+import com.g7.ercdataservice.entity.ReviewAssign;
 import com.g7.ercdataservice.entity.User;
+import com.g7.ercdataservice.model.ReviewerDetailResponse;
 import com.g7.ercdataservice.model.UserInfoUpdateRequest;
 import com.g7.ercdataservice.model.UserRoleUpdateRequest;
+import com.g7.ercdataservice.service.ReviewerService;
 import com.g7.ercdataservice.service.UserInfoService;
 import com.g7.ercdataservice.service.impl.UserInfoServiceImpl;
 import net.minidev.json.JSONObject;
@@ -15,6 +18,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/data/user")
@@ -23,6 +28,8 @@ public class UserInfoController {
 
     @Autowired
     private UserInfoService userInfoService;
+    @Autowired
+    private ReviewerService reviewerService;
 
     @GetMapping("")
     public ResponseEntity<?> getUserInfoByIdSelf(){
@@ -74,6 +81,19 @@ public class UserInfoController {
            e.printStackTrace();
        }
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/all/reviewer")
+    // @PreAuthorize("hasRole('ADMIN') or hasRole('SECRETARY')")
+    public ResponseEntity<?> getAllReviewers(){
+        List<ReviewerDetailResponse> reviewAssigns = new ArrayList<>();
+        try {
+            reviewAssigns = reviewerService.getAllReviewer();
+        }catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+        return new ResponseEntity<>(reviewAssigns,HttpStatus.OK);
     }
 
 

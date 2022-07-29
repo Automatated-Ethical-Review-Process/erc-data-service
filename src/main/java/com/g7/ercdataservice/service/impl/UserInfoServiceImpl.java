@@ -6,6 +6,7 @@ import com.g7.ercdataservice.entity.User;
 import com.g7.ercdataservice.enums.ERole;
 import com.g7.ercdataservice.exception.UserAlreadyExistException;
 import com.g7.ercdataservice.model.UserInfoUpdateRequest;
+import com.g7.ercdataservice.repository.ReviewerRepository;
 import com.g7.ercdataservice.repository.RoleRepository;
 import com.g7.ercdataservice.repository.UserInfoRepository;
 import com.g7.ercdataservice.service.ReviewerService;
@@ -27,7 +28,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     private RoleRepository roleRepository;
 
     @Autowired
-    private ReviewerService reviewerService;
+    private ReviewerRepository reviewerRepository;
     @Override
     public User save(User user) {
         if(userInfoRepository.existsUserInfoByIdOrEmail(user.getId(), user.getEmail())){
@@ -36,11 +37,15 @@ public class UserInfoServiceImpl implements UserInfoService {
         User savedUser = userInfoRepository.save(user);
         Role er = roleRepository.findRoleByName(ERole.ROLE_EXTERNAL_REVIEWER);
         Role ir = roleRepository.findRoleByName(ERole.ROLE_INTERNAL_REVIEWER);
-        if(user.getRoles().contains(er) || user.getRoles().contains(ir)){
+        boolean boolEr = user.getRoles().contains(er);
+        boolean boolIr = user.getRoles().contains(ir);
+
+        if( boolEr||boolIr ){
             Reviewer reviewer = Reviewer.builder()
                     .id(user.getId())
+                    .role(boolEr?er.getName():ir.getName())
                     .build();
-            reviewerService.add(reviewer);
+            reviewerRepository.save(reviewer);
         }
         return savedUser;
     }

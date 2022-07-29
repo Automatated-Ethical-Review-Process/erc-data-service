@@ -1,6 +1,7 @@
 package com.g7.ercdataservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.g7.ercdataservice.enums.ERole;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -26,6 +27,8 @@ public class Reviewer {
     @NotNull
     @NotBlank
     private String id;
+    @Enumerated(EnumType.STRING)
+    private ERole role;
     @OneToMany(
             cascade = CascadeType.REMOVE,
             fetch = FetchType.EAGER,

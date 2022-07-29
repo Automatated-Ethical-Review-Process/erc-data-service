@@ -2,6 +2,7 @@ package com.g7.ercdataservice.service;
 
 import com.g7.ercdataservice.entity.Proposal;
 import com.g7.ercdataservice.entity.ReviewAssign;
+import com.g7.ercdataservice.entity.Reviewer;
 import com.g7.ercdataservice.enums.ReviewerStatus;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface ReviewAssignService {
     void updateReviewerAssignState(String reviewerId, UUID pid, long vid, ReviewerStatus status);
     void removeReviewerAssign(String reviewerId, UUID pid, long vid);
     ReviewAssign getByReviewerAndProposalAndVersion(String reviewerId, UUID pid, long vid);
+    int countReviewAssignsByReviewerNotStatusOnGoing(Reviewer reviewer, ReviewerStatus status);
 }

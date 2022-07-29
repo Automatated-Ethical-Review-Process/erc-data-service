@@ -15,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -81,6 +79,11 @@ public class ReviewAssignServiceImpl implements ReviewAssignService {
         ).orElseThrow(
                 ()-> new EntityNotFoundException("reviewAssign object not found")
         );
+    }
+
+    @Override
+    public int countReviewAssignsByReviewerNotStatusOnGoing(Reviewer reviewer, ReviewerStatus status) {
+        return assignRepository.countReviewAssignsByReviewerAndStatusNot(reviewer,status);
     }
 
 }
