@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Set;
@@ -102,9 +103,33 @@ public class UserInfoServiceImpl implements UserInfoService {
         try {
             User user = getById(id);
             user.setRoles(roles);
-            userInfoRepository.save(user);
+            User savedUser = userInfoRepository.save(user);
+            Role er = roleRepository.findRoleByName(ERole.ROLE_EXTERNAL_REVIEWER);
+            Role ir = roleRepository.findRoleByName(ERole.ROLE_INTERNAL_REVIEWER);
+            boolean boolEr = savedUser.getRoles().contains(er);
+            boolean boolIr = savedUser.getRoles().contains(ir);
+            if(!(boolEr || boolIr)){
+                Reviewer reviewer = reviewerRepository.findById(savedUser.getId()).
+                        orElseThrow(()-> new EntityNotFoundException("Reviewer not found id = "+user.getId()));
+                reviewerRepository.delete(reviewer);
+            }
+
         }catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+    //@PostConstruct
+    void test(){
+        System.out.println("Starting >>>>>> ");
+        String id ="680d8dad-a9d8-4bd8-b3a2-60b95cd68ac6-1475493493";
+        User user = getById(id);
+        Role er = roleRepository.findRoleByName(ERole.ROLE_EXTERNAL_REVIEWER);
+        Role ir = roleRepository.findRoleByName(ERole.ROLE_INTERNAL_REVIEWER);
+        boolean boolEr = user.getRoles().contains(er);
+        boolean boolIr = user.getRoles().contains(ir);
+        if(!(boolEr || boolIr)){
+            System.out.println("Role removed");
         }
     }
 }
