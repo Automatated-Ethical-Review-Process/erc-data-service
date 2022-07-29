@@ -1,18 +1,16 @@
 package com.g7.ercdataservice.controller;
 
-import com.g7.ercdataservice.entity.ReviewAssign;
 import com.g7.ercdataservice.entity.User;
+import com.g7.ercdataservice.model.AccountExistsByEmailRequest;
 import com.g7.ercdataservice.model.ReviewerDetailResponse;
 import com.g7.ercdataservice.model.UserInfoUpdateRequest;
 import com.g7.ercdataservice.model.UserRoleUpdateRequest;
 import com.g7.ercdataservice.service.ReviewerService;
 import com.g7.ercdataservice.service.UserInfoService;
-import com.g7.ercdataservice.service.impl.UserInfoServiceImpl;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -94,6 +92,17 @@ public class UserInfoController {
             throw e;
         }
         return new ResponseEntity<>(reviewAssigns,HttpStatus.OK);
+    }
+
+    @PostMapping("/exists")
+    public ResponseEntity<?> userExistsByEmail(@RequestBody  AccountExistsByEmailRequest request){
+        try {
+            JSONObject jsonObject = userInfoService.verifyCoInvestigatorsHaveAccount(request.getEmails());
+            return new ResponseEntity<>(jsonObject,HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        }
     }
 
 

@@ -17,6 +17,8 @@ public interface UserInfoRepository extends JpaRepository<User,String> {
 
     boolean existsUserInfoByIdOrEmail(@NotNull String id, @NotBlank @Size(max = 50) @Email(message = "Invalid Email") String email);
 
+    boolean existsUserByEmail(@NotBlank @Size(max = 50) @Email(message = "Invalid Email") String email);
+
     @Query(nativeQuery = true,value = "SELECT user_id FROM public.user_roles WHERE role_id =:id")
     List<String> getAlla(@Param("id") int id);
 

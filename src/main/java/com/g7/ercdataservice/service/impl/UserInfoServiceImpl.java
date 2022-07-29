@@ -9,14 +9,17 @@ import com.g7.ercdataservice.model.UserInfoUpdateRequest;
 import com.g7.ercdataservice.repository.ReviewerRepository;
 import com.g7.ercdataservice.repository.RoleRepository;
 import com.g7.ercdataservice.repository.UserInfoRepository;
+import com.g7.ercdataservice.service.ApplicantService;
 import com.g7.ercdataservice.service.ReviewerService;
 import com.g7.ercdataservice.service.UserInfoService;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityNotFoundException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,9 +30,27 @@ public class UserInfoServiceImpl implements UserInfoService {
     private UserInfoRepository userInfoRepository;
     @Autowired
     private RoleRepository roleRepository;
-
     @Autowired
     private ReviewerRepository reviewerRepository;
+    @Autowired
+    private ApplicantService applicantService;
+
+    @Override
+    public JSONObject verifyCoInvestigatorsHaveAccount(Set<String> emails) {
+        Set<String> verifiedAccount = new HashSet<>();
+        Set<String> unVerifiedAccount = new HashSet<>();
+        for (String email:emails) {
+            if(userInfoRepository.existsUserByEmail(email)){
+                verifiedAccount.add(email);
+            }else{
+                unVerifiedAccount.add(email);
+            }
+        }
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("verified",verifiedAccount);
+        jsonObject.put("unverified",unVerifiedAccount);
+        return jsonObject;
+    }
     @Override
     public User save(User user) {
         if(userInfoRepository.existsUserInfoByIdOrEmail(user.getId(), user.getEmail())){
@@ -38,6 +59,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         User savedUser = userInfoRepository.save(user);
         Role er = roleRepository.findRoleByName(ERole.ROLE_EXTERNAL_REVIEWER);
         Role ir = roleRepository.findRoleByName(ERole.ROLE_INTERNAL_REVIEWER);
+        Role applicant = roleRepository.findRoleByName(ERole.ROLE_APPLICANT);
         boolean boolEr = user.getRoles().contains(er);
         boolean boolIr = user.getRoles().contains(ir);
 
@@ -47,6 +69,9 @@ public class UserInfoServiceImpl implements UserInfoService {
                     .role(boolEr?er.getName():ir.getName())
                     .build();
             reviewerRepository.save(reviewer);
+        }
+        if (user.getRoles().contains(applicant)){
+            applicantService.save(user.getId());
         }
         return savedUser;
     }
@@ -73,7 +98,11 @@ public class UserInfoServiceImpl implements UserInfoService {
         if(!userInfoRepository.existsById(id)){
             throw new EntityNotFoundException("User not found");
         }
+        Reviewer reviewer = reviewerRepository.findById(id).
+                orElseThrow(()-> new EntityNotFoundException("Reviewer not found id = "+id));
         userInfoRepository.deleteById(id);
+        applicantService.delete(id);
+        reviewerRepository.delete(reviewer);
     }
 
     @Override
@@ -106,12 +135,16 @@ public class UserInfoServiceImpl implements UserInfoService {
             User savedUser = userInfoRepository.save(user);
             Role er = roleRepository.findRoleByName(ERole.ROLE_EXTERNAL_REVIEWER);
             Role ir = roleRepository.findRoleByName(ERole.ROLE_INTERNAL_REVIEWER);
+            Role applicant = roleRepository.findRoleByName(ERole.ROLE_APPLICANT);
             boolean boolEr = savedUser.getRoles().contains(er);
             boolean boolIr = savedUser.getRoles().contains(ir);
             if(!(boolEr || boolIr)){
                 Reviewer reviewer = reviewerRepository.findById(savedUser.getId()).
                         orElseThrow(()-> new EntityNotFoundException("Reviewer not found id = "+user.getId()));
                 reviewerRepository.delete(reviewer);
+            }
+            if (!savedUser.getRoles().contains(applicant)){
+                applicantService.delete(savedUser.getId());
             }
 
         }catch (Exception e){
