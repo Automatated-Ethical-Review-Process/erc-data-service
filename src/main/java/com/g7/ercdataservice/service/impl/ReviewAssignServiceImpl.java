@@ -12,6 +12,7 @@ import com.g7.ercdataservice.service.ReviewAssignService;
 import com.g7.ercdataservice.service.ReviewerService;
 import com.g7.ercdataservice.service.VersionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -21,10 +22,13 @@ import java.util.UUID;
 public class ReviewAssignServiceImpl implements ReviewAssignService {
 
     @Autowired
+    @Lazy
     private ProposalService proposalService;
     @Autowired
+    @Lazy
     private VersionService versionService;
     @Autowired
+    @Lazy
     private ReviewerService reviewerService;
     @Autowired
     private ReviewerAssignRepository assignRepository;

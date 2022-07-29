@@ -12,6 +12,7 @@ import com.g7.ercdataservice.service.ReviewAssignService;
 import com.g7.ercdataservice.service.ReviewerService;
 import com.g7.ercdataservice.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -23,10 +24,18 @@ public class ReviewerServiceImpl implements ReviewerService {
 
     @Autowired
     private ReviewerRepository reviewerRepository;
+//    @Autowired
+//    private UserInfoRepository userInfoRepository;
+
     @Autowired
-    private UserInfoRepository userInfoRepository;
+    @Lazy
+    private UserInfoService userInfoService;
+//    @Autowired
+//    private ReviewerAssignRepository assignRepository;
+
     @Autowired
-    private ReviewerAssignRepository assignRepository;
+    @Lazy
+    private ReviewAssignService assignService;
     @Override
     public void add(Reviewer reviewer) {
         reviewerRepository.save(reviewer);
@@ -55,11 +64,15 @@ public class ReviewerServiceImpl implements ReviewerService {
                 (x)->{
                     ReviewerDetailResponse response = ReviewerDetailResponse.builder()
                             .reviewerId(x.getId())
-                            .name(userInfoRepository.findById(x.getId()).get().getName())
+                            //.name(userInfoRepository.findById(x.getId()).get().getName())
+                            .name(userInfoService.getById(x.getId()).getName())
                             .role(x.getRole())
-                            .assignedProposal(assignRepository.countReviewAssignsByReviewerAndStatusNot(
-                                    x, ReviewerStatus.REJECT)
-                            )
+//                            .assignedProposal(assignRepository.countReviewAssignsByReviewerAndStatusNot(
+//                                    x, ReviewerStatus.REJECT)
+//                            )
+                            .assignedProposal(assignService.countReviewAssignsByReviewerNotStatusOnGoing(
+                                    x,ReviewerStatus.REJECT
+                            ))
                             .build();
                     reviewerDetailResponses.add(response);
                 }
