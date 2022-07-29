@@ -18,7 +18,7 @@ public interface ReviewerAssignRepository extends JpaRepository<ReviewAssign,Lon
     Optional<ReviewAssign> findReviewAssignByReviewerAndVersionAndProposal(Reviewer reviewer, Version version, Proposal proposal);
     Optional<List<ReviewAssign>> findReviewAssignsByReviewerAndStatus(Reviewer reviewer, ReviewerStatus status);
     Optional<List<ReviewAssign>> findReviewAssignsByProposal(Proposal proposal);
-    Optional<List<ReviewAssign>> findReviewAssignsByVersion(Version version);
+    Optional<List<ReviewAssign>> findReviewAssignsByProposalAndStatusNot(Proposal proposal, ReviewerStatus status);
     boolean existsReviewAssignByProposalAndReviewerAndVersion(Proposal proposal, Reviewer reviewer, Version version);
 
     int countReviewAssignsByReviewerAndStatusNot(Reviewer reviewer, ReviewerStatus status);

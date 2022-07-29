@@ -5,6 +5,7 @@ import com.g7.ercdataservice.entity.User;
 import com.g7.ercdataservice.entity.Version;
 import com.g7.ercdataservice.enums.EReviewType;
 import com.g7.ercdataservice.enums.ReviewerStatus;
+import net.minidev.json.JSONObject;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,4 +21,6 @@ public interface ProposalService {
     List<Proposal> getAllProposals();
     List<Proposal> getAllProposalReviewerAndReviewStatus(String reviewerId, ReviewerStatus status);
     void updateProposalReviewType(UUID pid, EReviewType reviewType);
+
+    List<JSONObject> previousAssignedReviewerListOfProposal(UUID pid);
 }

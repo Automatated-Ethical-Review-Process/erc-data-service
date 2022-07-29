@@ -63,6 +63,11 @@ public class ProposalController {
         return new ResponseEntity<>(proposalService.getById(id),HttpStatus.OK);
     }
 
+    @GetMapping("/{id}/assigned-reviewers")
+    public ResponseEntity<?> getPreviouslyAssignedReviewers(@PathVariable UUID id){
+        return new ResponseEntity<>(proposalService.previousAssignedReviewerListOfProposal(id),HttpStatus.OK);
+    }
+
     @GetMapping("/{id}/versions")
     public ResponseEntity<?> getByIdAllVersions(@PathVariable UUID id){
         return new ResponseEntity<>(proposalService.getById(id).getVersions(),HttpStatus.OK);

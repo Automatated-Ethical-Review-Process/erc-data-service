@@ -1,11 +1,14 @@
 package com.g7.ercdataservice.service.impl;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.g7.ercdataservice.entity.Proposal;
+import com.g7.ercdataservice.entity.ReviewAssign;
 import com.g7.ercdataservice.entity.User;
 import com.g7.ercdataservice.entity.Version;
 import com.g7.ercdataservice.enums.EReviewType;
 import com.g7.ercdataservice.enums.ProposalStatus;
 import com.g7.ercdataservice.enums.ReviewerStatus;
+import com.g7.ercdataservice.enums.VersionStatus;
 import com.g7.ercdataservice.exception.ProposalOngoingException;
 import com.g7.ercdataservice.repository.ProposalRepository;
 import com.g7.ercdataservice.repository.ReviewerAssignRepository;
@@ -13,6 +16,7 @@ import com.g7.ercdataservice.service.ProposalService;
 import com.g7.ercdataservice.service.ReviewAssignService;
 import com.g7.ercdataservice.service.ReviewerService;
 import com.g7.ercdataservice.service.UserInfoService;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -115,5 +119,27 @@ public class ProposalServiceImpl implements ProposalService {
         Proposal proposal = getById(pid);
         proposal.setReviewType(reviewType);
         proposalRepository.save(proposal);
+    }
+
+    @Override
+    public List<JSONObject> previousAssignedReviewerListOfProposal(UUID pid) {
+        List<JSONObject> jsonObjects = new ArrayList<>();
+        Proposal proposal = getById(pid);
+        List<ReviewAssign> reviewAssignList =assignRepository.findReviewAssignsByProposalAndStatusNot(proposal,ReviewerStatus.REJECT)
+                .orElseThrow(()-> new EntityNotFoundException("ReviewAssigns are not found"));
+
+        reviewAssignList.stream().forEach(
+                (x)->{
+                    VersionStatus status = x.getVersion().getStatus();
+                    if(status == VersionStatus.MINOR || status == VersionStatus.MAJOR && x.getStatus() == ReviewerStatus.CONFIRM){
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("reviewer_id",x.getReviewer().getId());
+                        jsonObject.put("name",userInfoService.getById(x.getReviewer().getId()).getName());
+                        jsonObject.put("version number",x.getVersion().getNumber());
+                        jsonObjects.add(jsonObject);
+                    }
+                }
+        );
+        return jsonObjects;
     }
 }
